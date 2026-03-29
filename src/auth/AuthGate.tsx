@@ -75,7 +75,7 @@ export function AuthGate({ children }: AuthGateProps) {
         return
       }
       setStatus('loading')
-      fetchUserDoc(app, nextUser.email ?? '').then((userDoc) => {
+      fetchUserDoc(() => nextUser.getIdToken()).then((userDoc) => {
         const fetchedRoles = userDoc.roles
         setRoles(fetchedRoles)
         setDisplayName(buildDisplayName(userDoc.firstName, userDoc.lastName))
