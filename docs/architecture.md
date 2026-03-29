@@ -1,13 +1,13 @@
-# Finance Administration — Architecture
+# Vendor Administration — Architecture
 
 ## Overview
 
-Single-page admin app for managing per-user vendor spend access (departments, vendor includes/denies), served at `/admin/finance/`. No backend service — all data flows through the shared agent service API (`/agent/api/`).
+Single-page admin app for managing per-user vendor spend access (departments, vendor includes/denies), served at `/admin/vendors/`. No backend service — all data flows through the shared agent service API (`/agent/api/`).
 
 ```
 Browser
   │
-  ├── GET /admin/finance/*  ──►  Firebase Hosting (static SPA)
+  ├── GET /admin/vendors/*  ──►  Firebase Hosting (static SPA)
   │
   └── /agent/api/*  ────────►  Firebase Hosting rewrite
                                    │
@@ -22,7 +22,7 @@ Browser
 
 | Concern | Owner |
 |---------|-------|
-| SPA frontend, CI, artifact publish | This repo (`admin-finance`) |
+| SPA frontend, CI, artifact publish | This repo (`admin-vendors`) |
 | Shared UI components (GlobalNav, UserTable, AdminModal, MultiSelect, TagBadge, primitives) | `haderach-home` (`@haderach/shared-ui`) |
 | Auth primitives (BaseAuthUser, fetchUserDoc, buildDisplayName, RBAC helpers) | `haderach-home` (`@haderach/shared-ui`) |
 | Agent API endpoints (`/users`, `/vendors`, `/me`) | `agent` repo |
@@ -31,7 +31,7 @@ Browser
 ## Repo layout
 
 ```
-admin-finance/
+admin-vendors/
 ├── src/
 │   ├── auth/
 │   │   ├── accessPolicy.ts      # RBAC (re-exports from @haderach/shared-ui)
@@ -65,7 +65,7 @@ admin-finance/
 ├── tsconfig.app.json
 ├── tsconfig.json
 ├── tsconfig.node.json
-├── vite.config.ts                # base: /admin/finance/, proxy for local dev
+├── vite.config.ts                # base: /admin/vendors/, proxy for local dev
 └── README.md
 ```
 
@@ -73,7 +73,7 @@ admin-finance/
 
 | Path | Target | Notes |
 |------|--------|-------|
-| `/admin/finance/*` | Firebase Hosting → SPA `index.html` | Client-side routing |
+| `/admin/vendors/*` | Firebase Hosting → SPA `index.html` | Client-side routing |
 | `/agent/api/**` | Firebase Hosting rewrite → Cloud Run `agent-api` | Shared agent service |
 
 ## Access model
@@ -142,9 +142,9 @@ All API calls go through `agentFetch` from `@haderach/shared-ui`, which prepends
 
 Authentication is centralized at the platform level. This app does not handle sign-in directly.
 
-- **Sign-in (production):** If no Firebase Auth session exists, the app redirects to `/?returnTo=/admin/finance/`.
+- **Sign-in (production):** If no Firebase Auth session exists, the app redirects to `/?returnTo=/admin/vendors/`.
 - **Sign-in (local dev):** When `import.meta.env.DEV` is true and no session exists, the app shows a dev-only "Sign in with Google" button instead of redirecting, allowing authentication directly on the app's origin.
-- **Authorization:** Role-based access control (RBAC). User roles are resolved at runtime via `fetchUserDoc` (from `@haderach/shared-ui`), which calls `GET /agent/api/me`. Access is granted if the user holds the `finance_admin` role (`APP_GRANTING_ROLES['finance_administration']`).
+- **Authorization:** Role-based access control (RBAC). User roles are resolved at runtime via `fetchUserDoc` (from `@haderach/shared-ui`), which calls `GET /agent/api/me`. Access is granted if the user holds the `finance_admin` role (`APP_GRANTING_ROLES['vendor_administration']`).
 - Auth primitives (`BaseAuthUser`, `fetchUserDoc`, `buildDisplayName`) and RBAC helpers (`APP_CATALOG`, `APP_GRANTING_ROLES`, `hasAppAccess`, `getAccessibleApps`) are imported from `@haderach/shared-ui` — this app does not maintain local copies. `AuthUser` re-exports `BaseAuthUser` directly (no app-specific extensions).
 - **Unauthorized:** Access-denied screen with sign-out option.
 - **Bypass:** `VITE_AUTH_BYPASS=true` or `?authBypass=1` query param skips auth (local dev).
@@ -155,11 +155,11 @@ Config is read from `VITE_FIREBASE_*` env vars at build time (see `.env.example`
 
 ## Build and deploy flow
 
-1. `npm run build` → `dist/admin/finance/` (Vite output)
+1. `npm run build` → `dist/admin/vendors/` (Vite output)
 2. Package as `runtime.tar.gz` via `scripts/package-artifacts.sh`
 3. Generate `manifest.json` via `scripts/generate-manifest.mjs`
-4. Upload to `gs://<bucket>/admin-finance/versions/<commit-sha>/`
-5. Platform downloads, verifies, extracts into `hosting/public/admin/finance/`
+4. Upload to `gs://<bucket>/admin-vendors/versions/<commit-sha>/`
+5. Platform downloads, verifies, extracts into `hosting/public/admin/vendors/`
 6. `firebase deploy --only hosting`
 
 ## Local development

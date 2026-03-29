@@ -53,8 +53,8 @@ function platformAuthDev(): Plugin {
 }
 
 export default defineConfig({
-  base: '/admin/finance/',
-  build: { outDir: 'dist/admin/finance' },
+  base: '/admin/vendors/',
+  build: { outDir: 'dist/admin/vendors' },
   plugins: [platformAuthDev(), tailwindcss(), react()],
   resolve: {
     dedupe: ['react', 'react-dom'],

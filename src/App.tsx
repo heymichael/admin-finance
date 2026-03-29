@@ -127,7 +127,7 @@ export function App() {
   return (
     <div className="min-h-screen flex flex-col">
       <GlobalNav
-        activeAppId="finance_administration"
+        activeAppId="vendor_administration"
         apps={authUser.accessibleApps}
         adminApps={authUser.accessibleAdminApps}
         userEmail={authUser.email}

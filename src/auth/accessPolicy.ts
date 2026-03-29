@@ -11,4 +11,4 @@ export {
 } from '@haderach/shared-ui'
 export type { NavApp as AccessibleApp, UserDoc } from '@haderach/shared-ui'
 
-export const APP_ID = 'finance_administration'
+export const APP_ID = 'vendor_administration'

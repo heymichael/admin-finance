@@ -52,10 +52,10 @@ if (!runtimeChecksum) {
   process.exit(1);
 }
 
-const prefix = `gs://${values.bucket}/admin-finance/versions/${values.sha}`;
+const prefix = `gs://${values.bucket}/admin-vendors/versions/${values.sha}`;
 
 const manifest = {
-  app_id: "admin-finance",
+  app_id: "admin-vendors",
   version: values.version,
   commit_sha: values.sha,
   published_at: new Date().toISOString(),
