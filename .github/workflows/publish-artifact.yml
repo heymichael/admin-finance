@@ -78,7 +78,7 @@ jobs:
         run: |
           BUCKET="${{ vars.GCS_ARTIFACT_BUCKET }}"
           SHA="${{ steps.version.outputs.sha }}"
-          PREFIX="gs://${BUCKET}/admin-finance/versions/${SHA}"
+          PREFIX="gs://${BUCKET}/admin-vendors/versions/${SHA}"
 
           gsutil -m cp \
             artifacts/publish/runtime.tar.gz \
@@ -92,7 +92,7 @@ jobs:
         run: |
           BUCKET="${{ vars.GCS_ARTIFACT_BUCKET }}"
           SHA="${{ steps.version.outputs.sha }}"
-          PREFIX="gs://${BUCKET}/admin-finance/versions/${SHA}"
+          PREFIX="gs://${BUCKET}/admin-vendors/versions/${SHA}"
 
           echo "Listing uploaded objects:"
           gsutil ls "${PREFIX}/"

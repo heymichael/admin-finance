@@ -1,6 +1,6 @@
-# Finance Administration SPA
+# Vendor Administration SPA
 
-Admin interface for managing vendor spend access per user, served at `/admin/finance/`.
+Admin interface for managing vendor spend access per user, served at `/admin/vendors/`.
 
 ## Access
 
@@ -24,7 +24,7 @@ Resolution: **(vendors in allowed_departments UNION allowed_vendor_ids) MINUS de
 
 ## Tech stack
 
-- **React 19** + **Vite** (base path `/admin/finance/`, build output `dist/admin/finance/`)
+- **React 19** + **Vite** (base path `/admin/vendors/`, build output `dist/admin/vendors/`)
 - **Tailwind CSS** with app-specific color tokens in `src/index.css`
 - **@haderach/shared-ui** — `AdminModal`, `MultiSelect`, `UserTable`, `TagBadge`, `agentFetch`, `GlobalNav`, auth primitives (`BaseAuthUser`, `fetchUserDoc`, `buildDisplayName`), RBAC helpers
 - **Agent API** — all data flows through the agent service (`/agent/api/users`, `/agent/api/vendors`, `/agent/api/me`), no direct database access
@@ -41,7 +41,7 @@ Requires the agent service running locally on port 8080 (Vite proxies `/agent/ap
 ## Repository structure
 
 ```text
-admin-finance/
+admin-vendors/
 ├── src/
 │   ├── App.tsx               # Main view: user list with vendor access columns
 │   ├── UserAccessModal.tsx   # Per-user vendor access editor modal
@@ -66,4 +66,4 @@ Follows the standard Haderach app delivery contract:
 
 1. Merge to `main` triggers CI → artifact publish to GCS
 2. Platform `deploy.yml` workflow promotes the artifact to Firebase Hosting
-3. Artifact path: `gs://<bucket>/admin-finance/versions/<commit-sha>/`
+3. Artifact path: `gs://<bucket>/admin-vendors/versions/<commit-sha>/`

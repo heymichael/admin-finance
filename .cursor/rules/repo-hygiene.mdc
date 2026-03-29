@@ -1,14 +1,14 @@
 ---
-description: Admin-finance repo boundaries and documentation-first guardrails
+description: Admin-vendors repo boundaries and documentation-first guardrails
 alwaysApply: true
 ---
 
 # App Boundary Rule
 
-This repository is the admin-finance frontend for the haderach platform. It provides vendor spend access management for finance administrators.
+This repository is the admin-vendors frontend for the haderach platform. It provides vendor spend access management for finance administrators.
 
 - Keep strict separation of concerns:
-  - This repo owns finance admin UI implementation, vendor access management flows, and finance-admin-specific components.
+  - This repo owns vendor admin UI implementation, vendor access management flows, and vendor-admin-specific components.
   - Platform orchestration, promotion, and cross-app routing checks remain outside this repo.
 - Keep app logic and app tests in this repository; do not add platform orchestration logic here.
 - Keep naming kebab-case for repo/path conventions unless language-specific rules require otherwise.

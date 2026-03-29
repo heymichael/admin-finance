@@ -16,7 +16,7 @@ import { getAuthRuntimeConfig } from './runtimeConfig'
 import { AuthUserContext } from './AuthUserContext'
 import { Button } from '@haderach/shared-ui'
 
-const APP_PATH = '/admin/finance/'
+const APP_PATH = '/admin/vendors/'
 
 interface AuthGateProps {
   children: ReactNode
