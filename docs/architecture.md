@@ -102,7 +102,7 @@ A user's effective vendor set is computed as:
 
 The SPA uses shared components from `@haderach/shared-ui` (consumed via `file:` protocol from `../haderach-home/packages/shared-ui`):
 
-- **GlobalNav** — cross-app top navigation bar.
+- **GlobalNav** — cross-app top navigation bar with avatar dropdown (profile info, Settings link, Log out).
 - **UserTable** — user list table with column definitions, sorting, type-ahead search.
 - **AdminModal** — modal shell used by `UserAccessModal`.
 - **MultiSelect** — searchable multi-select popover for departments and vendor pickers.
