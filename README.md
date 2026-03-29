@@ -26,8 +26,8 @@ Resolution: **(vendors in allowed_departments UNION allowed_vendor_ids) MINUS de
 
 - **React 19** + **Vite** (base path `/admin/finance/`, build output `dist/admin/finance/`)
 - **Tailwind CSS** with app-specific color tokens in `src/index.css`
-- **@haderach/shared-ui** — `AdminModal`, `MultiSelect`, `UserTable`, `TagBadge`, `agentFetch`, `AuthGate`, `GlobalNav`
-- **Agent API** — all data flows through the agent service (`/agent/api/users`, `/agent/api/vendors`), no direct database access
+- **@haderach/shared-ui** — `AdminModal`, `MultiSelect`, `UserTable`, `TagBadge`, `agentFetch`, `GlobalNav`, auth primitives (`BaseAuthUser`, `fetchUserDoc`, `buildDisplayName`), RBAC helpers
+- **Agent API** — all data flows through the agent service (`/agent/api/users`, `/agent/api/vendors`, `/agent/api/me`), no direct database access
 
 ## Development
 
@@ -36,7 +36,7 @@ npm install
 npx vite --port 5176
 ```
 
-Requires the agent service running locally on port 8080 (Vite proxies `/agent/api` requests).
+Requires the agent service running locally on port 8080 (Vite proxies `/agent/api` requests). Set `VITE_AUTH_BYPASS=true` in `.env` to skip auth, or set it to `false` for real auth — a dev-only "Sign in with Google" button appears automatically in local dev (no redirect to haderach-home needed).
 
 ## Repository structure
 
