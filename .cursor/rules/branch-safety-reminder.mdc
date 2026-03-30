@@ -12,7 +12,7 @@ Before the **first file write or edit** in a conversation — regardless of whet
 - Keep the reminder non-blocking: user can explicitly choose to continue on `main`.
 - Ask once per conversation, then proceed with the user's choice without repeating.
 
-This applies to **all repos in the workspace**, including cross-repo writes (e.g., editing a task file in `haderach-platform` from another repo's Cursor window).
+This applies to **all repos in the workspace except `haderach-tasks`**. Task files are always edited directly on `main` — no branch check needed for writes to `haderach-tasks`.
 
 ## Suggested reminder
 
