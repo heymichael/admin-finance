@@ -149,7 +149,6 @@ export function UserAccessModal({
                 items={departmentItems}
                 selectedIds={departments}
                 onSelectionChange={setDepartments}
-                placeholder="Select departments…"
                 searchPlaceholder="Search departments…"
               />
               {departments.length > 0 && (
@@ -169,7 +168,6 @@ export function UserAccessModal({
                 items={vendorItems}
                 selectedIds={allowedVendorIds}
                 onSelectionChange={setAllowedVendorIds}
-                placeholder="Select vendors to include…"
                 searchPlaceholder="Search vendors…"
               />
               {allowedVendorIds.length > 0 && (
@@ -187,7 +185,6 @@ export function UserAccessModal({
                 items={vendorItems}
                 selectedIds={deniedVendorIds}
                 onSelectionChange={setDeniedVendorIds}
-                placeholder="Select vendors to deny…"
                 searchPlaceholder="Search vendors…"
               />
               {deniedVendorIds.length > 0 && (
