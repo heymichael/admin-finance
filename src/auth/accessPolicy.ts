@@ -5,6 +5,7 @@ export {
   ADMIN_GRANTING_ROLES,
   hasAppAccess,
   getAccessibleApps,
+  getAccessibleAdminApps,
   fetchUserDoc,
   buildDisplayName,
 } from '@haderach/shared-ui'
