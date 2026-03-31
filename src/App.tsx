@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
-  GlobalNav,
+  AppRail,
+  useRailExpanded,
   UserTable,
   TagBadge,
 } from '@haderach/shared-ui'
@@ -114,35 +115,41 @@ export function App() {
     },
   ], [vendorNameById])
 
+  const [railExpanded, toggleRail] = useRailExpanded()
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <GlobalNav
-        activeAppId="vendor_administration"
+    <div className="flex h-screen">
+      <AppRail
         apps={authUser.accessibleApps}
+        activeAppId="vendor_administration"
+        expanded={railExpanded}
+        onToggle={toggleRail}
         userEmail={authUser.email}
         userPhotoURL={authUser.photoURL}
         userDisplayName={authUser.displayName}
         onSignOut={authUser.signOut}
       />
 
-      <main className="flex-1 mx-auto w-full max-w-5xl px-6 py-8">
-        <div className="mb-6">
-          <h1 className="text-2xl font-semibold text-foreground">Vendor Access Management</h1>
-        </div>
-
-        {error && (
-          <div className="mb-4 rounded-md bg-error-bg px-4 py-3 text-sm text-error">
-            {error}
+      <main className="flex-1 overflow-y-auto">
+        <div className="mx-auto w-full max-w-5xl px-6 py-8">
+          <div className="mb-6">
+            <h1 className="text-2xl font-semibold text-foreground">Vendor Access Management</h1>
           </div>
-        )}
 
-        <UserTable
-          users={users}
-          columns={columns}
-          loading={loading}
-          onRowClick={setSelectedUser}
-          filterFn={(u) => u.roles.some((r) => VISIBLE_ROLES.includes(r))}
-        />
+          {error && (
+            <div className="mb-4 rounded-md bg-error-bg px-4 py-3 text-sm text-error">
+              {error}
+            </div>
+          )}
+
+          <UserTable
+            users={users}
+            columns={columns}
+            loading={loading}
+            onRowClick={setSelectedUser}
+            filterFn={(u) => u.roles.some((r) => VISIBLE_ROLES.includes(r))}
+          />
+        </div>
       </main>
 
       {selectedUser && (

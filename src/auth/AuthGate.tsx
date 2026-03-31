@@ -11,7 +11,7 @@ import {
   signOut,
   type User,
 } from 'firebase/auth'
-import { fetchUserDoc, buildDisplayName, hasAppAccess, getAccessibleApps, APP_CATALOG, APP_ID } from './accessPolicy'
+import { fetchUserDoc, buildDisplayName, hasAppAccess, getAccessibleApps, getAccessibleAdminApps, APP_CATALOG, ADMIN_CATALOG, APP_ID } from './accessPolicy'
 import { getAuthRuntimeConfig } from './runtimeConfig'
 import { AuthUserContext } from './AuthUserContext'
 import { Button } from '@haderach/shared-ui'
@@ -105,7 +105,9 @@ export function AuthGate({ children }: AuthGateProps) {
   }
 
   if (status === 'authorized') {
-    const accessibleApps = runtimeConfig.bypassAuth ? APP_CATALOG : getAccessibleApps(roles)
+    const accessibleApps = runtimeConfig.bypassAuth
+      ? [...APP_CATALOG, ...ADMIN_CATALOG]
+      : [...getAccessibleApps(roles), ...getAccessibleAdminApps(roles)]
     return (
       <AuthUserContext.Provider
         value={{
