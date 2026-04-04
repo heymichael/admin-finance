@@ -8,13 +8,17 @@ import {
 import type { UserTableColumn } from '@haderach/shared-ui'
 import { useAuthUser } from './auth/AuthUserContext'
 import { UserAccessModal } from './UserAccessModal'
+import { ContractorTable } from './ContractorTable'
 import { fetchUsers, fetchVendors } from './api'
 import type { UserSummary, Vendor } from './api'
+
+type Tab = 'users' | 'contractors'
 
 const VISIBLE_ROLES = ['user', 'admin']
 
 export function App() {
   const authUser = useAuthUser()
+  const [activeTab, setActiveTab] = useState<Tab>('users')
   const [users, setUsers] = useState<UserSummary[]>([])
   const [vendors, setVendors] = useState<Vendor[]>([])
   const [loading, setLoading] = useState(true)
@@ -137,19 +141,48 @@ export function App() {
             <h1 className="text-2xl font-semibold text-foreground">Vendor Access Management</h1>
           </div>
 
-          {error && (
-            <div className="mb-4 rounded-md bg-error-bg px-4 py-3 text-sm text-error">
-              {error}
-            </div>
+          <div className="mb-6 flex gap-1 border-b border-border">
+            {([
+              { id: 'users' as Tab, label: 'User Access' },
+              { id: 'contractors' as Tab, label: 'Contractors' },
+            ]).map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveTab(tab.id)}
+                className={`
+                  px-4 py-2 text-sm font-medium -mb-px border-b-2 transition-colors
+                  ${activeTab === tab.id
+                    ? 'border-primary text-foreground'
+                    : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                  }
+                `}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {activeTab === 'users' && (
+            <>
+              {error && (
+                <div className="mb-4 rounded-md bg-error-bg px-4 py-3 text-sm text-error">
+                  {error}
+                </div>
+              )}
+
+              <UserTable
+                users={users}
+                columns={columns}
+                loading={loading}
+                onRowClick={setSelectedUser}
+                filterFn={(u) => u.roles.some((r) => VISIBLE_ROLES.includes(r))}
+                className="max-h-[calc(100vh-14rem)]"
+              />
+            </>
           )}
 
-          <UserTable
-            users={users}
-            columns={columns}
-            loading={loading}
-            onRowClick={setSelectedUser}
-            filterFn={(u) => u.roles.some((r) => VISIBLE_ROLES.includes(r))}
-          />
+          {activeTab === 'contractors' && <ContractorTable />}
         </div>
       </main>
 
