@@ -15,7 +15,7 @@ Browser
                               Cloud Run (agent-api, FastAPI)
                                    │
                                    ▼
-                              Firestore (users + vendors collections)
+                              Cloud SQL Postgres (users, vendors, departments)
 ```
 
 ## Ownership boundaries
@@ -23,7 +23,7 @@ Browser
 | Concern | Owner |
 |---------|-------|
 | SPA frontend, CI, artifact publish | This repo (`admin-vendors`) |
-| Shared UI components (GlobalNav, UserTable, AdminModal, MultiSelect, TagBadge, primitives) | `haderach-home` (`@haderach/shared-ui`) |
+| Shared UI components (AppRail, UserTable, AdminModal, MultiSelect, TagBadge, FeedbackPopover, primitives) | `haderach-home` (`@haderach/shared-ui`) |
 | Auth primitives (BaseAuthUser, fetchUserDoc, buildDisplayName, RBAC helpers) | `haderach-home` (`@haderach/shared-ui`) |
 | Agent API endpoints (`/users`, `/vendors`, `/me`) | `agent` repo |
 | Firebase Hosting config, routing rewrites, deploy orchestration | `haderach-platform` |
@@ -38,7 +38,7 @@ admin-vendors/
 │   │   ├── AuthGate.tsx          # Auth gate (requires finance_admin role)
 │   │   ├── AuthUserContext.ts    # React context (AuthUser = BaseAuthUser)
 │   │   └── runtimeConfig.ts     # Firebase config from VITE_* env vars
-│   ├── App.tsx                   # Root: GlobalNav + user list + modal
+│   ├── App.tsx                   # Root: AppRail + user list + modal
 │   ├── UserAccessModal.tsx       # Per-user vendor access editor modal
 │   ├── api.ts                    # API functions (agentFetch → /agent/api/users, /vendors)
 │   ├── index.css                 # App color tokens
@@ -50,7 +50,14 @@ admin-vendors/
 ├── docs/
 │   └── architecture.md           # This file
 ├── .cursor/
-│   └── rules/                    # AI conventions
+│   └── rules/
+│       ├── architecture-pointer.mdc
+│       ├── branch-safety-reminder.mdc
+│       ├── cross-repo-status.mdc
+│       ├── pr-conventions.mdc
+│       ├── repo-hygiene.mdc
+│       ├── service-oriented-data-access.mdc
+│       └── todo-conventions.mdc
 ├── .github/
 │   ├── pull_request_template.md
 │   └── workflows/
@@ -102,7 +109,7 @@ A user's effective vendor set is computed as:
 
 The SPA uses shared components from `@haderach/shared-ui` (consumed via `file:` protocol from `../haderach-home/packages/shared-ui`):
 
-- **GlobalNav** — cross-app top navigation bar with avatar dropdown (profile info, Settings link, Log out).
+- **AppRail** — collapsible left rail for domain navigation with feedback popover and user avatar flyout. Replaces the legacy GlobalNav.
 - **UserTable** — user list table with column definitions, sorting, type-ahead search.
 - **AdminModal** — modal shell used by `UserAccessModal`.
 - **MultiSelect** — searchable multi-select popover for departments and vendor pickers.
@@ -112,12 +119,13 @@ The SPA uses shared components from `@haderach/shared-ui` (consumed via `file:` 
 Layout hierarchy (in `App.tsx`):
 
 ```
-.min-h-screen (flex column)
-├── GlobalNav (top bar)
-└── main (centered, max-w-5xl)
-    └── UserTable (sortable, searchable)
-        ├── Columns: Email, Name, Departments, Vendor Access
-        └── Row click → UserAccessModal
+.flex.h-screen
+├── AppRail (left rail)
+└── main.flex-1 (overflow-y-auto)
+    └── .max-w-5xl (centered)
+        └── UserTable (sortable, searchable)
+            ├── Columns: Email, Name, Departments, Vendor Access
+            └── Row click → UserAccessModal
 ```
 
 The user list filters to show only users with `user` or `admin` roles (the population that has vendor access). `finance_admin` users show "All" for departments and vendor access columns.

@@ -26,7 +26,7 @@ Resolution: **(vendors in allowed_departments UNION allowed_vendor_ids) MINUS de
 
 - **React 19** + **Vite** (base path `/admin/vendors/`, build output `dist/admin/vendors/`)
 - **Tailwind CSS** with app-specific color tokens in `src/index.css`
-- **@haderach/shared-ui** — `AdminModal`, `MultiSelect`, `UserTable`, `TagBadge`, `agentFetch`, `GlobalNav`, auth primitives (`BaseAuthUser`, `fetchUserDoc`, `buildDisplayName`), RBAC helpers
+- **@haderach/shared-ui** — `AppRail`, `AdminModal`, `MultiSelect`, `UserTable`, `TagBadge`, `FeedbackPopover`, `agentFetch`, auth primitives (`BaseAuthUser`, `fetchUserDoc`, `buildDisplayName`), RBAC helpers
 - **Agent API** — all data flows through the agent service (`/agent/api/users`, `/agent/api/vendors`, `/agent/api/me`), no direct database access
 
 ## Development
@@ -43,7 +43,7 @@ Requires the agent service running locally on port 8080 (Vite proxies `/agent/ap
 ```text
 admin-vendors/
 ├── src/
-│   ├── App.tsx               # Main view: user list with vendor access columns
+│   ├── App.tsx               # Root: AppRail + user list with vendor access columns
 │   ├── UserAccessModal.tsx   # Per-user vendor access editor modal
 │   ├── api.ts                # API functions (uses agentFetch from shared-ui)
 │   ├── auth/
